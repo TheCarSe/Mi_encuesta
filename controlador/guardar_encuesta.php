@@ -1,4 +1,3 @@
-<?php
 $servername = "localhost";
 $username = "root";  // Nombre de usuario
 $password = "";  // Contraseña (vacía por defecto)
@@ -10,7 +9,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 // Verificar conexión
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
-}
+} 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sexo = $_POST["sexo"];
@@ -27,6 +26,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $campo9 = $_POST["campo9"];
     $campo10 = $_POST["campo10"];
 
+    // Prevenir inyección SQL escapando los valores
+    $sexo = $conn->real_escape_string($sexo);
+    $edad = $conn->real_escape_string($edad);
+    $direccion = $conn->real_escape_string($direccion);
+    $campo1 = $conn->real_escape_string($campo1);
+    $campo2 = $conn->real_escape_string($campo2);
+    $campo3 = $conn->real_escape_string($campo3);
+    $campo4 = $conn->real_escape_string($campo4);
+    $campo5 = $conn->real_escape_string($campo5);
+    $campo6 = $conn->real_escape_string($campo6);
+    $campo7 = $conn->real_escape_string($campo7);
+    $campo8 = $conn->real_escape_string($campo8);
+    $campo9 = $conn->real_escape_string($campo9);
+    $campo10 = $conn->real_escape_string($campo10);
+
     $sql = "INSERT INTO respuestas (sexo, edad, direccion, campo1, campo2, campo3, campo4, campo5, campo6, campo7, campo8, campo9, campo10)
     VALUES ('$sexo', '$edad', '$direccion', '$campo1', '$campo2', '$campo3', '$campo4', '$campo5', '$campo6', '$campo7', '$campo8', '$campo9', '$campo10')";
 
@@ -34,9 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: confirmacion.php");
         exit();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $conn->error;
     }
 
     $conn->close();
 }
-?>
